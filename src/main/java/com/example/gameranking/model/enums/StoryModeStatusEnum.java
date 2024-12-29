@@ -7,10 +7,10 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum StoryModeStatusEnum {
 
-    NO_STORY_MODE(0, "No Story Mode"),
-    NOT_FINISHED(1, "Not Finished"),
-    FINISHED(2, "Finished"),
-    ONE_HUNDRED_PERCENT(3, "One Hundred Percent");
+    NO_STORY_MODE(0, "The Game doesn't have Story Mode."),
+    NOT_FINISHED(1, "The Player has not finished the Story Mode."),
+    FINISHED(2, "The Player has finished the Story Mode."),
+    ONE_HUNDRED_PERCENT(3, "The Player got 100% in the Story Mode.");
 
     private final Integer id;
     private final String description;
