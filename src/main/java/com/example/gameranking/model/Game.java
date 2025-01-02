@@ -4,11 +4,15 @@ import com.example.gameranking.model.enums.AchievementsStatusEnum;
 import com.example.gameranking.model.enums.MultiplayerStatusEnum;
 import com.example.gameranking.model.enums.StoryModeStatusEnum;
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +24,8 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "GAME")
 public class Game {
 
     @Id
@@ -51,6 +57,10 @@ public class Game {
     @Column(name = "ALL_ACHIEVEMENTS_DATE")
     private LocalDate allAchievementsDate;
 
-    @Column(name = "LAUNCHER")
+    @Column(name = "LAUNCHER", nullable = false)
     private String launcher;
+
+    @OneToOne
+    @JoinColumn(name = "GAME_RATING")
+    private GameRating gameRating;
 }
