@@ -18,6 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -25,7 +26,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "GAME")
+@Table(name = "game")
 public class Game {
 
     @Id
@@ -59,6 +60,9 @@ public class Game {
 
     @Column(name = "LAUNCHER", nullable = false)
     private String launcher;
+
+    @Column(name = "TOTAL_RATING")
+    private BigDecimal totalRating;
 
     @OneToOne
     @JoinColumn(name = "GAME_RATING")

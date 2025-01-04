@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "GAME")
+@Table(name = "game_rating")
 public class GameRating {
 
     @Id
