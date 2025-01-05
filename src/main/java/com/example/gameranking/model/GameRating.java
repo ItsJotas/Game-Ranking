@@ -38,7 +38,7 @@ public class GameRating {
     @Column(name = "PERFORMANCE", nullable = false, scale = 2, precision = 4)
     private BigDecimal performance;
 
-    @Column(name = "STORY", nullable = false, scale = 2, precision = 4)
+    @Column(name = "STORY", scale = 2, precision = 4)
     private BigDecimal story;
 
     @Column(name = "SOUND", nullable = false, scale = 2, precision = 4)
@@ -47,12 +47,12 @@ public class GameRating {
     @Column(name = "IMMERSION", nullable = false, scale = 2, precision = 4)
     private BigDecimal immersion;
 
-    @Column(name = "MATCH_MAKING", nullable = false, scale = 2, precision = 4)
+    @Column(name = "MATCH_MAKING", scale = 2, precision = 4)
     private BigDecimal matchMaking;
 
-    @Column(name = "COMPETITIVE_BALANCE", nullable = false, scale = 2, precision = 4)
+    @Column(name = "COMPETITIVE_BALANCE", scale = 2, precision = 4)
     private BigDecimal competitiveBalance;
 
-    @Column(name = "COOP", nullable = false, scale = 2, precision = 4)
+    @Column(name = "COOP", scale = 2, precision = 4)
     private BigDecimal coop;
 }

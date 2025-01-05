@@ -3,6 +3,7 @@ package com.example.gameranking.model;
 import com.example.gameranking.model.enums.AchievementsStatusEnum;
 import com.example.gameranking.model.enums.MultiplayerStatusEnum;
 import com.example.gameranking.model.enums.StoryModeStatusEnum;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -64,7 +65,7 @@ public class Game {
     @Column(name = "TOTAL_RATING")
     private BigDecimal totalRating;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "GAME_RATING")
     private GameRating gameRating;
 }
