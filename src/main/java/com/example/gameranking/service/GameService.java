@@ -11,7 +11,10 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Objects;
+
+import static com.example.gameranking.utils.GameRatingUtils.calculateAverage;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +49,10 @@ public class GameService {
         Game game = findById(gameId);
         GameRating gameRating = mapper.map(gameRatingCreateRequestDTO, GameRating.class);
 
+        BigDecimal totalRating = calculateAverage(gameRating);
+
         game.setGameRating(gameRating);
+        game.setTotalRating(totalRating);
         save(game);
     }
 }
