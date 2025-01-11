@@ -2,14 +2,18 @@ package com.example.gameranking.controller;
 
 import com.example.gameranking.model.dto.input.GameCreateRequestDTO;
 import com.example.gameranking.model.dto.input.GameRatingCreateRequestDTO;
+import com.example.gameranking.model.dto.output.GamePagedResponseDTO;
 import com.example.gameranking.service.GameService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -30,5 +34,15 @@ public class GameController {
                                          @PathVariable("gameId") Long gameId){
         service.rateGame(gameRatingCreateRequestDTO, gameId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<GamePagedResponseDTO>> getAllPaged(@RequestParam(required = false) String gameName,
+                                                                  @RequestParam(defaultValue = "0") Integer pageNumber,
+                                                                  @RequestParam(defaultValue = "10") Integer pageSize,
+                                                                  @RequestParam(defaultValue = "desc") String orderBy){
+
+        Page<GamePagedResponseDTO> gamePagedResponseDTOPage = service.getAllPaged(gameName, pageNumber, pageSize, orderBy);
+        return ResponseEntity.ok().body(gamePagedResponseDTOPage);
     }
 }

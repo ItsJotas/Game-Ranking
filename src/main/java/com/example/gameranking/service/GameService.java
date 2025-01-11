@@ -6,9 +6,14 @@ import com.example.gameranking.model.Game;
 import com.example.gameranking.model.GameRating;
 import com.example.gameranking.model.dto.input.GameCreateRequestDTO;
 import com.example.gameranking.model.dto.input.GameRatingCreateRequestDTO;
+import com.example.gameranking.model.dto.output.GamePagedResponseDTO;
 import com.example.gameranking.repository.GameRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -54,5 +59,15 @@ public class GameService {
         game.setGameRating(gameRating);
         game.setTotalRating(totalRating);
         save(game);
+    }
+
+    public Page<GamePagedResponseDTO> getAllPaged(String gameName, Integer pageNumber, Integer pageSize, String orderBy) {
+
+        String sortBy = "TOTAL_RATING";
+        Sort.Direction direction = orderBy.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by(direction, sortBy));
+
+        Page<Game> gamePaged = repository.findAllPaged(paging, gameName);
+        return gamePaged.map(g -> mapper.map(g, GamePagedResponseDTO.class));
     }
 }
