@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Objects;
 
 import static com.example.gameranking.utils.GameRatingUtils.calculateAverage;
@@ -29,9 +30,30 @@ public class GameService {
     private final ModelMapper mapper;
 
     public void create(GameCreateRequestDTO gameCreateRequestDTO) {
+        //TODO: Criar regra em que a data não pode ser maior que o dia de hoje
         verifyIfNameExists(gameCreateRequestDTO.getName());
+
+        validateDates(gameCreateRequestDTO);
+
         Game game = mapper.map(gameCreateRequestDTO, Game.class);
         save(game);
+    }
+
+    private static void validateDates(GameCreateRequestDTO gameCreateRequestDTO) {
+        if(Objects.nonNull(gameCreateRequestDTO.getAllAchievementsDate()) &&
+                gameCreateRequestDTO.getAllAchievementsDate().isAfter(LocalDate.now())){
+            throw new BadRequestException("The All Achievements Date cannot be in the future.");
+        }
+
+        if(Objects.nonNull(gameCreateRequestDTO.getFinishDate()) &&
+                gameCreateRequestDTO.getFinishDate().isAfter(LocalDate.now())){
+            throw new BadRequestException("The Finish Date cannot be in the future.");
+        }
+
+        if(Objects.nonNull(gameCreateRequestDTO.getOneHundredPercentDate()) &&
+                gameCreateRequestDTO.getOneHundredPercentDate().isAfter(LocalDate.now())){
+            throw new BadRequestException("The One Hundred Percent Date cannot be in the future.");
+        }
     }
 
     private void verifyIfNameExists(String gameName) {
