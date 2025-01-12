@@ -30,7 +30,6 @@ public class GameService {
     private final ModelMapper mapper;
 
     public void create(GameCreateRequestDTO gameCreateRequestDTO) {
-        //TODO: Criar regra em que a data não pode ser maior que o dia de hoje
         verifyIfNameExists(gameCreateRequestDTO.getName());
 
         validateDates(gameCreateRequestDTO);
