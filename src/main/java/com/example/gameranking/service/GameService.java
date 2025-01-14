@@ -22,6 +22,8 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.example.gameranking.utils.GameRatingUtils.calculateAverage;
 
@@ -93,12 +95,14 @@ public class GameService {
     }
 
     private void setGamePosition() {
-        List<Game> games = repository.findAllGamesTotalRating();
-        games.sort(Comparator.comparing(Game::getTotalRating, Comparator.nullsLast(Comparator.reverseOrder())));
+        List<Game> games = repository.findAllGamesTotalRating()
+                .stream()
+                .sorted(Comparator.comparing(Game::getTotalRating,
+                        Comparator.nullsLast(Comparator.reverseOrder())))
+                .collect(Collectors.toList());
 
-        for(int i = 0; i < games.size(); i++){
-            games.get(i).setRanking(i);
-        }
+        IntStream.range(0, games.size())
+                .forEach(i -> games.get(i).setRanking(i + 1));
 
         saveAll(games);
     }
