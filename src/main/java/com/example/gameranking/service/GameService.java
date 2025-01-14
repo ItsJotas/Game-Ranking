@@ -8,6 +8,7 @@ import com.example.gameranking.model.dto.input.GameCreateRequestDTO;
 import com.example.gameranking.model.dto.input.GameRatingCreateRequestDTO;
 import com.example.gameranking.model.dto.output.GamePagedResponseDTO;
 import com.example.gameranking.repository.GameRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 import static com.example.gameranking.utils.GameRatingUtils.calculateAverage;
@@ -71,6 +74,11 @@ public class GameService {
         repository.save(game);
     }
 
+    public void saveAll(List<Game> games) {
+        repository.saveAll(games);
+    }
+
+    @Transactional
     public void rateGame(GameRatingCreateRequestDTO gameRatingCreateRequestDTO, Long gameId) {
         Game game = findById(gameId);
         GameRating gameRating = mapper.map(gameRatingCreateRequestDTO, GameRating.class);
@@ -80,6 +88,19 @@ public class GameService {
         game.setGameRating(gameRating);
         game.setTotalRating(totalRating);
         save(game);
+
+        setGamePosition();
+    }
+
+    private void setGamePosition() {
+        List<Game> games = repository.findAllGamesTotalRating();
+        games.sort(Comparator.comparing(Game::getTotalRating, Comparator.nullsLast(Comparator.reverseOrder())));
+
+        for(int i = 0; i < games.size(); i++){
+            games.get(i).setRanking(i);
+        }
+
+        saveAll(games);
     }
 
     public Page<GamePagedResponseDTO> getAllPaged(String gameName, Integer pageNumber, Integer pageSize, String orderBy) {

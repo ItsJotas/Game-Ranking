@@ -65,6 +65,9 @@ public class Game {
     @Column(name = "TOTAL_RATING")
     private BigDecimal totalRating;
 
+    @Column(name = "RANKING")
+    private Integer ranking;
+
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "GAME_RATING")
     private GameRating gameRating;

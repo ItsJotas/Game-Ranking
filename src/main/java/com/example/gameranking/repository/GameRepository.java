@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface GameRepository extends JpaRepository<Game, Long> {
 
@@ -16,4 +18,7 @@ public interface GameRepository extends JpaRepository<Game, Long> {
     @Query(value = "SELECT * FROM game WHERE (:gameName IS NULL OR LOWER(NAME) LIKE LOWER(CONCAT('%', :gameName, '%')))",
             nativeQuery = true)
     Page<Game> findAllPaged(Pageable paging, @Param("gameName") String gameName);
+
+    @Query(value = "SELECT * FROM game WHERE TOTAL_RATING IS NOT NULL", nativeQuery = true)
+    List<Game> findAllGamesTotalRating();
 }
