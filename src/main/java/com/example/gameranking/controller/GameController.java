@@ -40,7 +40,7 @@ public class GameController {
     public ResponseEntity<Page<GamePagedResponseDTO>> getAllPaged(@RequestParam(required = false) String gameName,
                                                                   @RequestParam(defaultValue = "0") Integer pageNumber,
                                                                   @RequestParam(defaultValue = "10") Integer pageSize,
-                                                                  @RequestParam(defaultValue = "desc") String orderBy){
+                                                                  @RequestParam(defaultValue = "asc") String orderBy){
 
         Page<GamePagedResponseDTO> gamePagedResponseDTOPage = service.getAllPaged(gameName, pageNumber, pageSize, orderBy);
         return ResponseEntity.ok().body(gamePagedResponseDTOPage);

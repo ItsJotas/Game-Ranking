@@ -109,7 +109,7 @@ public class GameService {
 
     public Page<GamePagedResponseDTO> getAllPaged(String gameName, Integer pageNumber, Integer pageSize, String orderBy) {
 
-        String sortBy = "TOTAL_RATING";
+        String sortBy = "RANKING";
         Sort.Direction direction = orderBy.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
         Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by(direction, sortBy));
 
