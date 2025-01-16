@@ -15,8 +15,8 @@ public interface GameRepository extends JpaRepository<Game, Long> {
 
     Game findByName(String name);
 
-    @Query(value = "SELECT * FROM game WHERE (:gameName IS NULL OR LOWER(NAME) LIKE LOWER(CONCAT('%', :gameName, '%')))",
-            nativeQuery = true)
+    @Query(value = "SELECT * FROM game WHERE (:gameName IS NULL OR LOWER(NAME) LIKE LOWER(CONCAT('%', :gameName, '%'))) " +
+            "AND TOTAL_RATING IS NOT NULL", nativeQuery = true)
     Page<Game> findAllPaged(Pageable paging, @Param("gameName") String gameName);
 
     @Query(value = "SELECT * FROM game WHERE TOTAL_RATING IS NOT NULL", nativeQuery = true)
