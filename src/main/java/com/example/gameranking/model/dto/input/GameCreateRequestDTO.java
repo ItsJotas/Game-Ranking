@@ -2,7 +2,7 @@ package com.example.gameranking.model.dto.input;
 
 import com.example.gameranking.model.enums.AchievementsStatusEnum;
 import com.example.gameranking.model.enums.MultiplayerStatusEnum;
-import com.example.gameranking.model.enums.StoryModeStatusEnum;
+import com.example.gameranking.model.enums.CampaignStatusEnum;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -23,7 +23,7 @@ public class GameCreateRequestDTO {
     private String name;
 
     @NotNull(message = "The field Story Mode cannot be null.")
-    private StoryModeStatusEnum storyModeStatusEnum;
+    private CampaignStatusEnum campaignStatusEnum;
 
     @NotNull(message = "The field Multiplayer cannot be null.")
     private MultiplayerStatusEnum multiplayerStatusEnum;

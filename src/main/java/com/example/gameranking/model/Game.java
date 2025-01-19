@@ -2,7 +2,7 @@ package com.example.gameranking.model;
 
 import com.example.gameranking.model.enums.AchievementsStatusEnum;
 import com.example.gameranking.model.enums.MultiplayerStatusEnum;
-import com.example.gameranking.model.enums.StoryModeStatusEnum;
+import com.example.gameranking.model.enums.CampaignStatusEnum;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,7 +40,7 @@ public class Game {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "STORY_MODE_STATUS", nullable = false)
-    private StoryModeStatusEnum storyModeStatusEnum;
+    private CampaignStatusEnum campaignStatusEnum;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "MULTIPLAYER_STATUS", nullable = false)
