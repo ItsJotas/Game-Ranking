@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum CampaignStatusEnum {
 
-    CAMPAIGN(0, "The Game doesn't have Campaign."),
+    NO_CAMPAIGN(0, "The Game doesn't have Campaign."),
     NOT_FINISHED(1, "The Player has not finished the Campaign."),
     FINISHED(2, "The Player has finished the Campaign."),
     ONE_HUNDRED_PERCENT(3, "The Player got 100% in the Campaign."),
