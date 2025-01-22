@@ -11,17 +11,25 @@ import com.example.gameranking.repository.GameRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -33,6 +41,12 @@ public class GameService {
 
     private final GameRepository repository;
     private final ModelMapper mapper;
+
+    @Value("${file.upload-dir}")
+    private String imagesDirectory;
+
+    @Value("${file.allowed-types}")
+    private String allowedTypes;
 
     public void create(GameCreateRequestDTO gameCreateRequestDTO) {
         verifyIfNameExists(gameCreateRequestDTO.getName());
@@ -115,5 +129,37 @@ public class GameService {
 
         Page<Game> gamePaged = repository.findAllPaged(paging, gameName);
         return gamePaged.map(g -> mapper.map(g, GamePagedResponseDTO.class));
+    }
+
+    public void uploadImage(MultipartFile file, Long gameId) throws IOException {
+        verifyImageExtension(file);
+
+        Game game = findById(gameId);
+
+        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        Path filePath = Paths.get(imagesDirectory, fileName);
+
+        Files.createDirectories(filePath.getParent());
+
+        Files.write(filePath, file.getBytes());
+
+        String imageUrl = "/game-ranking-images" + fileName;
+        game.setImageUrl(imageUrl);
+        save(game);
+    }
+
+    private void verifyImageExtension(MultipartFile file) {
+        String contentType = file.getContentType();
+        List<String> allowedMimeTypes = Arrays.asList(allowedTypes.split(","));
+
+        List<String> allowedExtensions = allowedMimeTypes.stream()
+                .map(mimeType -> mimeType.substring(mimeType.indexOf("/") + 1))
+                .map(ext -> "." + ext)
+                .toList();
+
+        if (!allowedMimeTypes.contains(contentType)) {
+            throw new BadRequestException("Invalid file type. Allowed types are: " + String.join(", ",
+                    allowedExtensions));
+        }
     }
 }

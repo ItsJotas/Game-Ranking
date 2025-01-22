@@ -68,6 +68,9 @@ public class Game {
     @Column(name = "RANKING")
     private Integer ranking;
 
+    @Column(name = "IMAGE_URL")
+    private String imageUrl;
+
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "GAME_RATING")
     private GameRating gameRating;
