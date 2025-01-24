@@ -48,6 +48,9 @@ public class GameService {
     @Value("${file.allowed-types}")
     private String allowedTypes;
 
+    @Value("${image.base.url}")
+    private String imageBaseUrl;
+
     public void create(GameCreateRequestDTO gameCreateRequestDTO) {
         verifyIfNameExists(gameCreateRequestDTO.getName());
 
@@ -143,7 +146,7 @@ public class GameService {
 
         Files.write(filePath, file.getBytes());
 
-        String imageUrl = "/game-ranking-images" + fileName;
+        String imageUrl = imageBaseUrl + fileName;
         game.setImageUrl(imageUrl);
         save(game);
     }

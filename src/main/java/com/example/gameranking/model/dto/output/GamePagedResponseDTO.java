@@ -29,6 +29,7 @@ public class GamePagedResponseDTO {
     private String launcher;
     private BigDecimal totalRating;
     private Integer ranking;
+    private String imageUrl;
 
     public String getTotalRating() {
         return totalRating != null
