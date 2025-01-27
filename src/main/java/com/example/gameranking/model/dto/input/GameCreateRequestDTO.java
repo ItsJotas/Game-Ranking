@@ -22,7 +22,7 @@ public class GameCreateRequestDTO {
     @Size(max = 50, message = "The field Name cannot exceed 50 characters.")
     private String name;
 
-    @NotNull(message = "The field Story Mode cannot be null.")
+    @NotNull(message = "The field Campaign Status cannot be null.")
     private CampaignStatusEnum campaignStatusEnum;
 
     @NotNull(message = "The field Multiplayer cannot be null.")
