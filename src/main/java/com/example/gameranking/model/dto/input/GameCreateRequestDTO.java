@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -39,4 +40,6 @@ public class GameCreateRequestDTO {
 
     @NotNull(message = "The field Launcher cannot be null.")
     private String launcher;
+
+    private MultipartFile image;
 }

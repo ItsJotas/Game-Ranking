@@ -51,12 +51,13 @@ public class GameService {
     @Value("${image.base.url}")
     private String imageBaseUrl;
 
-    public void create(GameCreateRequestDTO gameCreateRequestDTO) {
+    public void create(GameCreateRequestDTO gameCreateRequestDTO) throws IOException {
         verifyIfNameExists(gameCreateRequestDTO.getName());
 
         validateDates(gameCreateRequestDTO);
 
         Game game = mapper.map(gameCreateRequestDTO, Game.class);
+        uploadImage(game, gameCreateRequestDTO.getImage());
         save(game);
     }
 
@@ -134,10 +135,8 @@ public class GameService {
         return gamePaged.map(g -> mapper.map(g, GamePagedResponseDTO.class));
     }
 
-    public void uploadImage(MultipartFile file, Long gameId) throws IOException {
+    public void uploadImage(Game game, MultipartFile file) throws IOException {
         verifyImageExtension(file);
-
-        Game game = findById(gameId);
 
         String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
         Path filePath = Paths.get(imagesDirectory, fileName);
@@ -148,7 +147,6 @@ public class GameService {
 
         String imageUrl = imageBaseUrl + fileName;
         game.setImageUrl(imageUrl);
-        save(game);
     }
 
     private void verifyImageExtension(MultipartFile file) {
