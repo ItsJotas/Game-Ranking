@@ -7,6 +7,7 @@ import com.example.gameranking.model.GameRating;
 import com.example.gameranking.model.dto.input.GameCreateRequestDTO;
 import com.example.gameranking.model.dto.input.GameRatingCreateRequestDTO;
 import com.example.gameranking.model.dto.output.GamePagedResponseDTO;
+import com.example.gameranking.model.dto.output.UnratedGamesResponseDTO;
 import com.example.gameranking.repository.GameRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -162,5 +163,15 @@ public class GameService {
             throw new BadRequestException("Invalid file type. Allowed types are: " + String.join(", ",
                     allowedExtensions));
         }
+    }
+
+    public Page<UnratedGamesResponseDTO> getUnratedGames(Integer pageNumber, Integer pageSize, String orderBy,
+                                                         String sortBy) {
+
+        Sort.Direction direction = orderBy.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by(direction, sortBy));
+
+        Page<Game> unratedGames = repository.getUnratedGames(paging);
+        return unratedGames.map(g -> mapper.map(g, UnratedGamesResponseDTO.class));
     }
 }

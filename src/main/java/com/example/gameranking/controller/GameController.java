@@ -3,6 +3,7 @@ package com.example.gameranking.controller;
 import com.example.gameranking.model.dto.input.GameCreateRequestDTO;
 import com.example.gameranking.model.dto.input.GameRatingCreateRequestDTO;
 import com.example.gameranking.model.dto.output.GamePagedResponseDTO;
+import com.example.gameranking.model.dto.output.UnratedGamesResponseDTO;
 import com.example.gameranking.service.GameService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -47,5 +48,17 @@ public class GameController {
 
         Page<GamePagedResponseDTO> gamePagedResponseDTOPage = service.getAllPaged(gameName, pageNumber, pageSize, orderBy);
         return ResponseEntity.ok().body(gamePagedResponseDTOPage);
+    }
+
+    @GetMapping("/unrated-games")
+    public ResponseEntity<Page<UnratedGamesResponseDTO>> getUnratedGames(
+            @RequestParam(defaultValue = "0") Integer pageNumber,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "asc") String orderBy,
+            @RequestParam(defaultValue = "id") String sortBy
+    ) {
+        Page<UnratedGamesResponseDTO> unratedGamesResponseDTOS = service.getUnratedGames(pageNumber, pageSize, orderBy,
+                sortBy);
+        return ResponseEntity.ok().body(unratedGamesResponseDTOS);
     }
 }

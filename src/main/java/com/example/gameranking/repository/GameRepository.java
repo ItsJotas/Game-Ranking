@@ -21,4 +21,7 @@ public interface GameRepository extends JpaRepository<Game, Long> {
 
     @Query(value = "SELECT * FROM game WHERE TOTAL_RATING IS NOT NULL", nativeQuery = true)
     List<Game> findAllGamesTotalRating();
+
+    @Query(value = "SELECT * FROM game WHERE TOTAL_RATING IS NULL", nativeQuery = true)
+    Page<Game> getUnratedGames(Pageable paging);
 }
