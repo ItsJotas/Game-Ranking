@@ -13,4 +13,5 @@ public class UnratedGamesResponseDTO {
 
     private Long id;
     private String name;
+    private String imageUrl;
 }
