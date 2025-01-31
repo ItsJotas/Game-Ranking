@@ -166,12 +166,12 @@ public class GameService {
     }
 
     public Page<UnratedGamesResponseDTO> getUnratedGames(Integer pageNumber, Integer pageSize, String orderBy,
-                                                         String sortBy) {
+                                                         String sortBy, String gameName) {
 
         Sort.Direction direction = orderBy.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
         Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by(direction, sortBy));
 
-        Page<Game> unratedGames = repository.getUnratedGames(paging);
+        Page<Game> unratedGames = repository.getUnratedGames(paging, gameName);
         return unratedGames.map(g -> mapper.map(g, UnratedGamesResponseDTO.class));
     }
 }

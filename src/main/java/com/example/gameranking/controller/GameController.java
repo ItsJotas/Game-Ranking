@@ -55,10 +55,11 @@ public class GameController {
             @RequestParam(defaultValue = "0") Integer pageNumber,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "asc") String orderBy,
-            @RequestParam(defaultValue = "id") String sortBy
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(required = false) String gameName
     ) {
         Page<UnratedGamesResponseDTO> unratedGamesResponseDTOS = service.getUnratedGames(pageNumber, pageSize, orderBy,
-                sortBy);
+                sortBy, gameName);
         return ResponseEntity.ok().body(unratedGamesResponseDTOS);
     }
 }
