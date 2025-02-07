@@ -33,7 +33,7 @@ public class GameController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/{gameId}/rating")
+    @PostMapping("/unrated-games/{gameId}/rating")
     public ResponseEntity<Void> rateGame(@RequestBody @Valid GameRatingCreateRequestDTO gameRatingCreateRequestDTO,
                                          @PathVariable("gameId") Long gameId){
         service.rateGame(gameRatingCreateRequestDTO, gameId);
@@ -55,7 +55,7 @@ public class GameController {
             @RequestParam(defaultValue = "0") Integer pageNumber,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "asc") String orderBy,
-            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "name") String sortBy,
             @RequestParam(required = false) String gameName
     ) {
         Page<UnratedGamesResponseDTO> unratedGamesResponseDTOS = service.getUnratedGames(pageNumber, pageSize, orderBy,
