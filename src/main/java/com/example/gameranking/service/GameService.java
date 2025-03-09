@@ -6,6 +6,7 @@ import com.example.gameranking.model.Game;
 import com.example.gameranking.model.GameRating;
 import com.example.gameranking.model.dto.input.GameCreateRequestDTO;
 import com.example.gameranking.model.dto.input.GameRatingCreateRequestDTO;
+import com.example.gameranking.model.dto.input.GameUpdateRequestDTO;
 import com.example.gameranking.model.dto.output.GamePagedResponseDTO;
 import com.example.gameranking.model.dto.output.UnratedGamesResponseDTO;
 import com.example.gameranking.repository.GameRepository;
@@ -173,5 +174,16 @@ public class GameService {
 
         Page<Game> unratedGames = repository.getUnratedGames(paging, gameName);
         return unratedGames.map(g -> mapper.map(g, UnratedGamesResponseDTO.class));
+    }
+
+    public void updateGame(Long id, GameUpdateRequestDTO gameUpdateRequestDTO) throws IOException {
+        Game game = findById(id);
+        mapper.map(gameUpdateRequestDTO, game);
+
+        if(Objects.nonNull(gameUpdateRequestDTO.getImage())) {
+            uploadImage(game, gameUpdateRequestDTO.getImage());
+        }
+
+        repository.save(game);
     }
 }

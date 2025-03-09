@@ -2,6 +2,7 @@ package com.example.gameranking.controller;
 
 import com.example.gameranking.model.dto.input.GameCreateRequestDTO;
 import com.example.gameranking.model.dto.input.GameRatingCreateRequestDTO;
+import com.example.gameranking.model.dto.input.GameUpdateRequestDTO;
 import com.example.gameranking.model.dto.output.GamePagedResponseDTO;
 import com.example.gameranking.model.dto.output.UnratedGamesResponseDTO;
 import com.example.gameranking.service.GameService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -61,5 +63,12 @@ public class GameController {
         Page<UnratedGamesResponseDTO> unratedGamesResponseDTOS = service.getUnratedGames(pageNumber, pageSize, orderBy,
                 sortBy, gameName);
         return ResponseEntity.ok().body(unratedGamesResponseDTOS);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateGame(@PathVariable Long id, @RequestBody GameUpdateRequestDTO gameUpdateRequestDTO)
+            throws IOException {
+        service.updateGame(id, gameUpdateRequestDTO);
+        return ResponseEntity.ok().build();
     }
 }
