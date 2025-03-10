@@ -3,7 +3,7 @@ package com.example.gameranking.controller;
 import com.example.gameranking.model.dto.input.GameCreateRequestDTO;
 import com.example.gameranking.model.dto.input.GameRatingCreateRequestDTO;
 import com.example.gameranking.model.dto.input.GameUpdateRequestDTO;
-import com.example.gameranking.model.dto.output.GamePagedResponseDTO;
+import com.example.gameranking.model.dto.output.GameResponseDTO;
 import com.example.gameranking.model.dto.output.UnratedGamesResponseDTO;
 import com.example.gameranking.service.GameService;
 import jakarta.validation.Valid;
@@ -43,12 +43,12 @@ public class GameController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<GamePagedResponseDTO>> getAllPaged(@RequestParam(required = false) String gameName,
-                                                                  @RequestParam(defaultValue = "0") Integer pageNumber,
-                                                                  @RequestParam(defaultValue = "10") Integer pageSize,
-                                                                  @RequestParam(defaultValue = "asc") String orderBy){
+    public ResponseEntity<Page<GameResponseDTO>> getAllPaged(@RequestParam(required = false) String gameName,
+                                                             @RequestParam(defaultValue = "0") Integer pageNumber,
+                                                             @RequestParam(defaultValue = "10") Integer pageSize,
+                                                             @RequestParam(defaultValue = "asc") String orderBy){
 
-        Page<GamePagedResponseDTO> gamePagedResponseDTOPage = service.getAllPaged(gameName, pageNumber, pageSize, orderBy);
+        Page<GameResponseDTO> gamePagedResponseDTOPage = service.getAllPaged(gameName, pageNumber, pageSize, orderBy);
         return ResponseEntity.ok().body(gamePagedResponseDTOPage);
     }
 
@@ -70,5 +70,11 @@ public class GameController {
             throws IOException {
         service.updateGame(id, gameUpdateRequestDTO);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<GameResponseDTO> getGameById(@PathVariable Long id) {
+        GameResponseDTO gameResponseDTO = service.getGameById(id);
+        return ResponseEntity.ok().body(gameResponseDTO);
     }
 }

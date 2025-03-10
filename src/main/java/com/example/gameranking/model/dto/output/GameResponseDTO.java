@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GamePagedResponseDTO {
+public class GameResponseDTO {
 
     private Long id;
     private String name;

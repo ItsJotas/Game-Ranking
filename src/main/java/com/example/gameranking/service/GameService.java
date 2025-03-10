@@ -7,7 +7,7 @@ import com.example.gameranking.model.GameRating;
 import com.example.gameranking.model.dto.input.GameCreateRequestDTO;
 import com.example.gameranking.model.dto.input.GameRatingCreateRequestDTO;
 import com.example.gameranking.model.dto.input.GameUpdateRequestDTO;
-import com.example.gameranking.model.dto.output.GamePagedResponseDTO;
+import com.example.gameranking.model.dto.output.GameResponseDTO;
 import com.example.gameranking.model.dto.output.UnratedGamesResponseDTO;
 import com.example.gameranking.repository.GameRepository;
 import jakarta.transaction.Transactional;
@@ -127,14 +127,14 @@ public class GameService {
         saveAll(games);
     }
 
-    public Page<GamePagedResponseDTO> getAllPaged(String gameName, Integer pageNumber, Integer pageSize, String orderBy) {
+    public Page<GameResponseDTO> getAllPaged(String gameName, Integer pageNumber, Integer pageSize, String orderBy) {
 
         String sortBy = "RANKING";
         Sort.Direction direction = orderBy.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
         Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by(direction, sortBy));
 
         Page<Game> gamePaged = repository.findAllPaged(paging, gameName);
-        return gamePaged.map(g -> mapper.map(g, GamePagedResponseDTO.class));
+        return gamePaged.map(g -> mapper.map(g, GameResponseDTO.class));
     }
 
     public void uploadImage(Game game, MultipartFile file) throws IOException {
@@ -185,5 +185,10 @@ public class GameService {
         }
 
         repository.save(game);
+    }
+
+    public GameResponseDTO getGameById(Long id) {
+        Game game = findById(id);
+        return mapper.map(game, GameResponseDTO.class);
     }
 }
