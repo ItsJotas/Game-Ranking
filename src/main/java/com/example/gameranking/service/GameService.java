@@ -191,4 +191,14 @@ public class GameService {
         Game game = findById(id);
         return mapper.map(game, GameResponseDTO.class);
     }
+
+    public Page<GameResponseDTO> getAllGames(Integer pageNumber, Integer pageSize, String orderBy, String sortBy,
+                                             String gameName) {
+
+        Sort.Direction direction = orderBy.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by(direction, sortBy));
+
+        Page<Game> gamePage = repository.getAllGames(paging, gameName);
+        return gamePage.map(g -> mapper.map(g, GameResponseDTO.class));
+    }
 }

@@ -42,7 +42,7 @@ public class GameController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping
+    @GetMapping("/rated-games")
     public ResponseEntity<Page<GameResponseDTO>> getAllPaged(@RequestParam(required = false) String gameName,
                                                              @RequestParam(defaultValue = "0") Integer pageNumber,
                                                              @RequestParam(defaultValue = "10") Integer pageSize,
@@ -76,5 +76,17 @@ public class GameController {
     public ResponseEntity<GameResponseDTO> getGameById(@PathVariable Long id) {
         GameResponseDTO gameResponseDTO = service.getGameById(id);
         return ResponseEntity.ok().body(gameResponseDTO);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<GameResponseDTO>> getAllGames(
+            @RequestParam(defaultValue = "0") Integer pageNumber,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "asc") String orderBy,
+            @RequestParam(defaultValue = "name") String sortBy,
+            @RequestParam(required = false) String gameName
+    ) {
+        Page<GameResponseDTO> gameResponseDTOPage = service.getAllGames(pageNumber, pageSize, orderBy, sortBy, gameName);
+        return ResponseEntity.ok().body(gameResponseDTOPage);
     }
 }
