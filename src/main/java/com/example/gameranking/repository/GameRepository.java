@@ -15,9 +15,12 @@ public interface GameRepository extends JpaRepository<Game, Long> {
 
     Game findByName(String name);
 
-    @Query(value = "SELECT * FROM game WHERE (:gameName IS NULL OR LOWER(NAME) LIKE LOWER(CONCAT('%', :gameName, '%'))) " +
-            "AND TOTAL_RATING IS NOT NULL", nativeQuery = true)
-    Page<Game> findAllPaged(Pageable paging, @Param("gameName") String gameName);
+    @Query(value = "SELECT * FROM game " +
+            "WHERE (:gameName IS NULL OR LOWER(NAME) LIKE LOWER(CONCAT('%', :gameName, '%'))) " +
+            "ORDER BY CASE WHEN RANKING IS NULL THEN 1 ELSE 0 END ASC, " +
+            "         CASE WHEN :orderBy = 'desc' THEN RANKING END DESC, " +
+            "         CASE WHEN :orderBy = 'asc' THEN RANKING END ASC ", nativeQuery = true)
+    Page<Game> findAllPaged(Pageable paging, @Param("gameName") String gameName, @Param("orderBy") String orderBy);
 
     @Query(value = "SELECT * FROM game WHERE TOTAL_RATING IS NOT NULL", nativeQuery = true)
     List<Game> findAllGamesTotalRating();

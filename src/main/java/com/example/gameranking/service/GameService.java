@@ -129,11 +129,10 @@ public class GameService {
 
     public Page<GameResponseDTO> getAllPaged(String gameName, Integer pageNumber, Integer pageSize, String orderBy) {
 
-        String sortBy = "RANKING";
-        Sort.Direction direction = orderBy.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
-        Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by(direction, sortBy));
+        String direction = orderBy.equalsIgnoreCase("desc") ? "desc" : "asc";
+        Pageable paging = PageRequest.of(pageNumber, pageSize);
 
-        Page<Game> gamePaged = repository.findAllPaged(paging, gameName);
+        Page<Game> gamePaged = repository.findAllPaged(paging, gameName, direction);
         return gamePaged.map(g -> mapper.map(g, GameResponseDTO.class));
     }
 
