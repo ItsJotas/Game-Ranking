@@ -66,7 +66,7 @@ public class GameController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateGame(@PathVariable Long id, @RequestBody GameUpdateRequestDTO gameUpdateRequestDTO)
+    public ResponseEntity<Void> updateGame(@PathVariable Long id, @ModelAttribute GameUpdateRequestDTO gameUpdateRequestDTO)
             throws IOException {
         service.updateGame(id, gameUpdateRequestDTO);
         return ResponseEntity.ok().build();
