@@ -1,8 +1,8 @@
 package com.example.gameranking.model;
 
 import com.example.gameranking.model.enums.AchievementsStatusEnum;
-import com.example.gameranking.model.enums.MultiplayerStatusEnum;
 import com.example.gameranking.model.enums.CampaignStatusEnum;
+import com.example.gameranking.model.enums.MultiplayerStatusEnum;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -72,6 +73,10 @@ public class Game {
     private String imageUrl;
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "GAME_RATING")
+    @JoinColumn(name = "GAME_RATING_ID")
     private GameRating gameRating;
+
+    @ManyToOne
+    @JoinColumn(name = "GAME_COLLECTION_ID")
+    private GameCollection gameCollection;
 }
