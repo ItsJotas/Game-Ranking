@@ -3,6 +3,7 @@ package com.example.gameranking.service;
 import com.example.gameranking.exception.customized.BadRequestException;
 import com.example.gameranking.exception.customized.ObjectNotFoundException;
 import com.example.gameranking.model.Game;
+import com.example.gameranking.model.GameCollection;
 import com.example.gameranking.model.GameRating;
 import com.example.gameranking.model.dto.input.GameCreateRequestDTO;
 import com.example.gameranking.model.dto.input.GameRatingCreateRequestDTO;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -199,5 +201,43 @@ public class GameService {
 
         Page<Game> gamePage = repository.getAllGames(paging, gameName);
         return gamePage.map(g -> mapper.map(g, GameResponseDTO.class));
+    }
+
+    public List<Game> findAllGamesById(List<Long> gameIds) {
+        List<Game> games = repository.findAllById(gameIds);
+
+        if (games.isEmpty()) {
+            throw new BadRequestException("No games found for the provided IDs.");
+        }
+
+        if (games.size() != gameIds.size()) {
+            List<Long> existingGameIds = games.stream().map(Game::getId).toList();
+            List<Long> missingGameIds = gameIds.stream()
+                    .filter(id -> !existingGameIds.contains(id))
+                    .toList();
+            throw new BadRequestException("The following games do not exist: " + missingGameIds);
+        }
+
+        return games;
+    }
+
+    public BigDecimal calculateAverageRating(List<Long> gameIds) {
+        List<Game> games = findAllGamesById(gameIds);
+
+        BigDecimal totalRating = games.stream()
+                .map(Game::getTotalRating)
+                .filter(Objects::nonNull)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        return totalRating.divide(BigDecimal.valueOf(games.size()), 2, RoundingMode.HALF_UP);
+    }
+
+    public void associateGames(List<Long> gameIds, GameCollection gameCollection) {
+        List<Game> games = findAllGamesById(gameIds);
+
+        games.forEach(game -> {
+            game.setGameCollection(gameCollection);
+            save(game);
+        });
     }
 }
