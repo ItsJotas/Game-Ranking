@@ -240,4 +240,8 @@ public class GameService {
             save(game);
         });
     }
+
+    public List<Game> findAllGamesByCollectionId(Long collectionId) {
+        return repository.findAllGamesByCollectionId(collectionId);
+    }
 }

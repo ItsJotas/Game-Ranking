@@ -33,4 +33,11 @@ public interface GameRepository extends JpaRepository<Game, Long> {
     @Query(value = "SELECT * FROM game WHERE (:gameName IS NULL OR LOWER(NAME) " +
             "LIKE LOWER(CONCAT('%', :gameName, '%')))", nativeQuery = true)
     Page<Game> getAllGames(Pageable paging, @Param("gameName") String gameName);
+
+    @Query(value = """
+            SELECT g FROM Game g
+            JOIN GameCollection gc ON gc.id = g.gameCollection.id
+            WHERE gc.id = :collectionId
+            """)
+    List<Game> findAllGamesByCollectionId(@Param("collectionId") Long collectionId);
 }
