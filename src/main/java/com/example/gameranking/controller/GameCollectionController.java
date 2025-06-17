@@ -26,7 +26,7 @@ public class GameCollectionController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/teste")
+    @PostMapping("/all")
     public ResponseEntity<Page<GameCollectionResponseDTO>> getAllGameCollections(
             @RequestBody(required = false) GameCollectionFilterDTO gameCollectionFilterDTO,
             @RequestParam(defaultValue = "0") Integer pageNumber,
