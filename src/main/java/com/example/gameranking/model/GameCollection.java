@@ -32,4 +32,8 @@ public class GameCollection {
 
     @Column(name = "AVERAGE_RATING")
     private BigDecimal averageRating;
+
+    @Column(name = "COLOR")
+    private String color;
+
 }

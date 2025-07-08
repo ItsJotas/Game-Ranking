@@ -16,5 +16,7 @@ public class GameCollectionResponseDTO {
     private Long id;
     private String name;
     private Double averageRating;
+    private String color;
     private List<GameForCollectionResponseDTO> games;
+
 }

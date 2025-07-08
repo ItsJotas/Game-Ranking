@@ -36,6 +36,7 @@ public class GameCollectionService {
 
         gameCollection.setName(gameCollectionCreateDTO.getName());
         gameCollection.setAverageRating(averageRating);
+        gameCollection.setColor(gameCollection.getColor());
 
         save(gameCollection);
         gameService.associateGames(gameCollectionCreateDTO.getGameIds(), gameCollection);

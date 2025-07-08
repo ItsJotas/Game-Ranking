@@ -15,4 +15,6 @@ public class GameCollectionCreateDTO {
 
     private String name;
     private List<Long> gameIds;
+    private String color;
+
 }
