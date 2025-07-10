@@ -16,9 +16,9 @@ public interface GameCollectionRepository extends JpaRepository<GameCollection, 
             SELECT gc FROM GameCollection gc
             WHERE (:name IS NULL OR LOWER(gc.name) LIKE CONCAT('%', LOWER(:name), '%'))
             ORDER BY
-                CASE WHEN averageRating IS NULL THEN 1 ELSE 0 END ASC,
-                CASE WHEN :orderBy = 'desc' THEN averageRating END DESC,
-                CASE WHEN :orderBy = 'asc' THEN averageRating END ASC
+                CASE WHEN name IS NULL THEN 1 ELSE 0 END ASC,
+                CASE WHEN :orderBy = 'desc' THEN name END DESC,
+                CASE WHEN :orderBy = 'asc' THEN name END ASC
             """)
     Page<GameCollection> findAllPaged(Pageable paging, @Param("name") String name, String orderBy);
 }
