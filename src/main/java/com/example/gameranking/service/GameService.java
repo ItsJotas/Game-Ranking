@@ -3,7 +3,6 @@ package com.example.gameranking.service;
 import com.example.gameranking.exception.customized.BadRequestException;
 import com.example.gameranking.exception.customized.ObjectNotFoundException;
 import com.example.gameranking.model.Game;
-import com.example.gameranking.model.GameCollection;
 import com.example.gameranking.model.GameRating;
 import com.example.gameranking.model.dto.input.GameCreateRequestDTO;
 import com.example.gameranking.model.dto.input.GameRatingCreateRequestDTO;
@@ -230,15 +229,6 @@ public class GameService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         return totalRating.divide(BigDecimal.valueOf(games.size()), 2, RoundingMode.HALF_UP);
-    }
-
-    public void associateGames(List<Long> gameIds, GameCollection gameCollection) {
-        List<Game> games = findAllGamesById(gameIds);
-
-        games.forEach(game -> {
-            game.setGameCollection(gameCollection);
-            save(game);
-        });
     }
 
     public List<Game> findAllGamesByCollectionId(Long collectionId) {

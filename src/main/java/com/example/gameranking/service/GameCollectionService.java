@@ -25,6 +25,7 @@ public class GameCollectionService {
 
     private final GameCollectionRepository repository;
     private final GameService gameService;
+    private final GameCollectionRelationshipService gameCollectionRelationshipService;
     private final ModelMapper mapper;
 
     @Transactional
@@ -32,14 +33,17 @@ public class GameCollectionService {
         GameCollection gameCollection = new GameCollection();
 
         verifyIfNameExists(gameCollectionCreateDTO.getName());
-        BigDecimal averageRating = gameService.calculateAverageRating(gameCollectionCreateDTO.getGameIds());
+
+        if(Objects.nonNull(gameCollectionCreateDTO.getGameIds()) && !gameCollectionCreateDTO.getGameIds().isEmpty()) {
+            BigDecimal averageRating = gameService.calculateAverageRating(gameCollectionCreateDTO.getGameIds());
+            gameCollection.setAverageRating(averageRating);
+            gameCollectionRelationshipService.associateGames(gameCollectionCreateDTO.getGameIds(), gameCollection);
+        }
 
         gameCollection.setName(gameCollectionCreateDTO.getName());
-        gameCollection.setAverageRating(averageRating);
-        gameCollection.setColor(gameCollection.getColor());
+        gameCollection.setColor(gameCollectionCreateDTO.getColor());
 
         save(gameCollection);
-        gameService.associateGames(gameCollectionCreateDTO.getGameIds(), gameCollection);
     }
 
     public void save(GameCollection gameCollection) {

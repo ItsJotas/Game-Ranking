@@ -36,8 +36,8 @@ public interface GameRepository extends JpaRepository<Game, Long> {
 
     @Query(value = """
             SELECT g FROM Game g
-            JOIN GameCollection gc ON gc.id = g.gameCollection.id
-            WHERE gc.id = :collectionId
+            JOIN GameCollectionRelationship gcr ON gcr.game.id = g.id
+            WHERE gcr.gameCollection.id = :collectionId
             """)
     List<Game> findAllGamesByCollectionId(@Param("collectionId") Long collectionId);
 }
