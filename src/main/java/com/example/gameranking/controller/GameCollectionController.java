@@ -4,6 +4,7 @@ import com.example.gameranking.model.dto.input.GameCollectionCreateDTO;
 import com.example.gameranking.model.dto.input.GameCollectionFilterDTO;
 import com.example.gameranking.model.dto.output.GameCollectionResponseDTO;
 import com.example.gameranking.service.GameCollectionService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class GameCollectionController {
     private final GameCollectionService service;
 
     @PostMapping
-    public ResponseEntity<Void> createGameCollection(@RequestBody GameCollectionCreateDTO gameCollectionCreateDTO) {
+    public ResponseEntity<Void> createGameCollection(@RequestBody @Valid GameCollectionCreateDTO gameCollectionCreateDTO) {
         service.createGameCollection(gameCollectionCreateDTO);
         return ResponseEntity.ok().build();
     }
