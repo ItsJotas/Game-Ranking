@@ -34,16 +34,16 @@ public class GameCollectionService {
 
         verifyIfNameExists(gameCollectionCreateDTO.getName());
 
+        gameCollection.setName(gameCollectionCreateDTO.getName());
+        gameCollection.setColor(gameCollectionCreateDTO.getColor());
+
+        save(gameCollection);
+
         if(Objects.nonNull(gameCollectionCreateDTO.getGameIds()) && !gameCollectionCreateDTO.getGameIds().isEmpty()) {
             BigDecimal averageRating = gameService.calculateAverageRating(gameCollectionCreateDTO.getGameIds());
             gameCollection.setAverageRating(averageRating);
             gameCollectionRelationshipService.associateGames(gameCollectionCreateDTO.getGameIds(), gameCollection);
         }
-
-        gameCollection.setName(gameCollectionCreateDTO.getName());
-        gameCollection.setColor(gameCollectionCreateDTO.getColor());
-
-        save(gameCollection);
     }
 
     public void save(GameCollection gameCollection) {
