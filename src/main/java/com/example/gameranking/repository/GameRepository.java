@@ -1,6 +1,7 @@
 package com.example.gameranking.repository;
 
 import com.example.gameranking.model.Game;
+import com.example.gameranking.model.dto.output.GameToFilterResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -40,4 +41,12 @@ public interface GameRepository extends JpaRepository<Game, Long> {
             WHERE gcr.gameCollection.id = :collectionId
             """)
     List<Game> findAllGamesByCollectionId(@Param("collectionId") Long collectionId);
+
+    @Query(value = """
+            SELECT new com.example.gameranking.model.dto.output.GameToFilterResponseDTO(g.id, g.name)
+            FROM Game g
+            WHERE (:name IS NULL OR LOWER(g.name) LIKE LOWER(CONCAT('%', :name, '%')))
+            ORDER BY g.name
+            """)
+    List<GameToFilterResponseDTO> getGamesToFilter(@Param("name") String name);
 }

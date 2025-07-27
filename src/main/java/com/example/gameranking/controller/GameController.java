@@ -1,9 +1,11 @@
 package com.example.gameranking.controller;
 
 import com.example.gameranking.model.dto.input.GameCreateRequestDTO;
+import com.example.gameranking.model.dto.input.GameNameRequestDTO;
 import com.example.gameranking.model.dto.input.GameRatingCreateRequestDTO;
 import com.example.gameranking.model.dto.input.GameUpdateRequestDTO;
 import com.example.gameranking.model.dto.output.GameResponseDTO;
+import com.example.gameranking.model.dto.output.GameToFilterResponseDTO;
 import com.example.gameranking.model.dto.output.UnratedGamesResponseDTO;
 import com.example.gameranking.service.GameService;
 import jakarta.validation.Valid;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/game")
@@ -88,5 +91,11 @@ public class GameController {
     ) {
         Page<GameResponseDTO> gameResponseDTOPage = service.getAllGames(pageNumber, pageSize, orderBy, sortBy, gameName);
         return ResponseEntity.ok().body(gameResponseDTOPage);
+    }
+
+    @PostMapping("/filter")
+    public ResponseEntity<List<GameToFilterResponseDTO>> getGamesToFilter(@RequestBody GameNameRequestDTO gameNameDTO) {
+        List<GameToFilterResponseDTO> gameDTO = service.getGamesToFilter(gameNameDTO);
+        return ResponseEntity.ok().body(gameDTO);
     }
 }

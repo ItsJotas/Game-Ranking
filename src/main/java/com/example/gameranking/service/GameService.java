@@ -5,9 +5,11 @@ import com.example.gameranking.exception.customized.ObjectNotFoundException;
 import com.example.gameranking.model.Game;
 import com.example.gameranking.model.GameRating;
 import com.example.gameranking.model.dto.input.GameCreateRequestDTO;
+import com.example.gameranking.model.dto.input.GameNameRequestDTO;
 import com.example.gameranking.model.dto.input.GameRatingCreateRequestDTO;
 import com.example.gameranking.model.dto.input.GameUpdateRequestDTO;
 import com.example.gameranking.model.dto.output.GameResponseDTO;
+import com.example.gameranking.model.dto.output.GameToFilterResponseDTO;
 import com.example.gameranking.model.dto.output.UnratedGamesResponseDTO;
 import com.example.gameranking.repository.GameRepository;
 import jakarta.transaction.Transactional;
@@ -233,5 +235,9 @@ public class GameService {
 
     public List<Game> findAllGamesByCollectionId(Long collectionId) {
         return repository.findAllGamesByCollectionId(collectionId);
+    }
+
+    public List<GameToFilterResponseDTO> getGamesToFilter(GameNameRequestDTO gameNameDTO) {
+        return repository.getGamesToFilter(gameNameDTO.getName());
     }
 }
