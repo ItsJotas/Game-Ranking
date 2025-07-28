@@ -43,7 +43,7 @@ public interface GameRepository extends JpaRepository<Game, Long> {
     List<Game> findAllGamesByCollectionId(@Param("collectionId") Long collectionId);
 
     @Query(value = """
-            SELECT new com.example.gameranking.model.dto.output.GameToFilterResponseDTO(g.id, g.name)
+            SELECT new com.example.gameranking.model.dto.output.GameToFilterResponseDTO(g.id, g.name, g.imageUrl)
             FROM Game g
             WHERE (:name IS NULL OR LOWER(g.name) LIKE LOWER(CONCAT('%', :name, '%')))
             ORDER BY g.name

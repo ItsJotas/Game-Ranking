@@ -11,9 +11,11 @@ public class GameToFilterResponseDTO {
 
     private Long id;
     private String name;
+    private String imageUrl;
 
-    public GameToFilterResponseDTO(Long id, String name) {
+    public GameToFilterResponseDTO(Long id, String name, String imageUrl) {
         this.id = id;
         this.name = name;
+        this.imageUrl = imageUrl;
     }
 }
